@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LENO Perón — DUAL Arquitectura Comercial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Fixture';
+      src: url('data:font/woff2;base64,d09GMk9UVE8AAJegAAwAAAAA9sgAAJdOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADYLdchpSG9YeHJhwBmAAiEYBNgIkA45YBAYFhR4HIBvt9dcOoIvqAQCge95DRFXth41I0fqhTFVVVa8Jwd2rdgAIP/3iV7/53R/+9Je//eNf//nfP0KHz3kv0ZXJZDK4L3H/3cqHSnr4CtNHs5ycOnV57ytv7po+zz+3mdtsm5spk02f12FxOBwOh8XicDgcDodFdRWckagT+gDwBcIzy+NJnf2KQ7tkhhPBL6LYN7uyHFGrKS10U0o1tdjQ3aVdrdZYbtANmNJbKte4pPsu5n/S6sj3nPMD2Oa/Ow==');
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0d0d0d; color:#fff; font-family:'Montserrat', sans-serif; opacity:0; transition:opacity 0.6s ease; overflow-x:hidden; }
+    body.loaded { opacity:1; }
+    
+    header { position:fixed; top:0; left:0; width:100%; display:flex; justify-content:space-between; align-items:center; padding:30px 40px; z-index:10; background:linear-gradient(to bottom, rgba(13,13,13,0.8), transparent); backdrop-filter:blur(10px); }
+    .logo { font-family:'Fixture', sans-serif; font-size:24px; letter-spacing:4px; text-decoration:none; color:#fff; }
+    nav { display:flex; gap:30px; }
+    nav a { text-decoration:none; color:#fff; font-size:11px; text-transform:uppercase; letter-spacing:2px; font-weight:400; transition:opacity 0.3s; }
+    nav a:hover { opacity:0.5; }
+    
+    .p-container { padding:140px 40px 60px; max-width:1600px; margin:0 auto; }
+    .p-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:60px; border-bottom:1px solid #222; padding-bottom:30px; }
+    .p-title-area h1 { font-family:'Fixture', sans-serif; font-size:48px; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+    .p-title-area p { font-size:14px; color:#888; font-weight:300; }
+    .p-meta { display:flex; gap:40px; font-size:12px; text-transform:uppercase; letter-spacing:1px; color:#aaa; }
+    .p-meta span strong { color:#fff; font-weight:500; }
+
+    .gallery { display:flex; flex-direction:column; gap:40px; }
+    .row { display:grid; gap:40px; }
+    .row.single { grid-template-columns:1fr; }
+    .row.pair { grid-template-columns:1fr 1fr; }
+    
+    .item { position:relative; overflow:hidden; background:#151515; cursor:pointer; opacity:0; transform:translateY(30px); transition:opacity 0.8s ease, transform 0.8s ease; }
+    .item.visible { opacity:1; transform:translateY(0); }
+    .item img { width:100%; height:auto; display:block; transition:transform 1s ease; }
+    .item:hover img { transform:scale(1.03); }
+
+    footer { padding:60px 40px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid #111; font-size:11px; color:#44px; letter-spacing:1px; }
+    .f-logo { font-family:'Fixture', sans-serif; font-size:16px; letter-spacing:2px; color:#222; }
+    
+    #lightbox { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,10,10,0.98); z-index:100; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; pointer-events:none; transition:opacity 0.4s ease; }
+    #lightbox.open { opacity:1; pointer-events:auto; }
+    .lb-close { position:absolute; top:30px; right:40px; background:none; border:none; color:#fff; font-size:24px; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:200; z-index:110; }
+    .lb-frame { position:relative; width:90%; height:80%; display:flex; justify-content:center; align-items:center; }
+    .lb-frame img { max-width:100%; max-height:100%; object-fit:contain; }
+    .lb-frame .pair { display:flex; gap:20px; width:100%; height:100%; justify-content:center; align-items:center; }
+    .lb-frame .pair img { max-width:48%; max-height:100%; }
+    .lb-nav { position:absolute; width:100%; display:flex; justify-content:space-between; padding:0 20px; box-sizing:border-box; pointer-events:none; }
+    .lb-arrow { background:none; border:none; color:#fff; font-size:30px; cursor:pointer; opacity:0.3; transition:opacity 0.3s; pointer-events:auto; font-family:'Montserrat',sans-serif; font-weight:200; }
+    .lb-arrow:hover { opacity:1; }
+    .lb-info { margin-top:20px; display:flex; justify-content:space-between; width:90%; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:#666; }
+
+    @media(max-width:900px) {
+      header { padding:20px; }
+      .p-container { padding:100px 20px 40px; }
+      .p-header { flex-direction:column; align-items:flex-start; gap:20px; }
+      .row.pair { grid-template-columns:1fr; gap:20px; }
+      .gallery { gap:20px; }
+      footer { padding:40px 20px; flex-direction:column; gap:20px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">DUAL</a>
+    <nav>
+      <a href="index.html">Estudio</a>
+      <a href="index.html#obras">Obras</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </header>
+
+  <main class="p-container">
+    <section class="p-header">
+      <div class="p-title-area">
+        <h1>LENO Perón</h1>
+        <p>Arquitectura Comercial / Gastronomía</p>
+      </div>
+      <div class="p-meta">
+        <span><strong>Ubicación:</strong> Tucumán</span>
+        <span><strong>Año:</strong> 2026</span>
+      </div>
+    </section>
+
+    <section class="gallery">
+      <div class="row single">
+        <div class="item" onclick="openLightbox(0)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794758/IMG_2376_k0i22l.jpg" alt="Leno Perón - Vista General">
+        </div>
+      </div>
+
+      <div class="row pair">
+        <div class="item" onclick="openLightbox(1)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794701/IMG_2304_us0s50.jpg" alt="Leno Perón - Detalle Barra">
+        </div>
+        <div class="item" onclick="openLightbox(2)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794637/IMG_2314_pz6gdf.jpg" alt="Leno Perón - Salón Interior">
+        </div>
+      </div>
+
+      <div class="row single">
+        <div class="item" onclick="openLightbox(3)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794552/IMG_2289_hlym6v.jpg" alt="Leno Perón - Fachada Nocturna">
+        </div>
+      </div>
+
+      <div class="row pair">
+        <div class="item" onclick="openLightbox(4)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794548/IMG_2326_mtftpl.jpg" alt="Leno Perón - Mobiliario">
+        </div>
+        <div class="item" onclick="openLightbox(5)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794548/IMG_2344_yfqkhw.jpg" alt="Leno Perón - Perspectiva Lateral">
+        </div>
+      </div>
+
+      <div class="row single">
+        <div class="item" onclick="openLightbox(6)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794546/IMG_2337_nvzayv.jpg" alt="Leno Perón - Iluminación">
+        </div>
+      </div>
+
+      <div class="row pair">
+        <div class="item" onclick="openLightbox(7)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794546/IMG_2286_s12bh6.jpg" alt="Leno Perón - Texturas de Madera">
+        </div>
+        <div class="item" onclick="openLightbox(8)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794545/IMG_2303_qu7q3z.jpg" alt="Leno Perón - Acceso">
+        </div>
+      </div>
+
+      <div class="row pair">
+        <div class="item" onclick="openLightbox(9)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794543/IMG_2294_btypfe.jpg" alt="Leno Perón - Contramano">
+        </div>
+        <div class="item" onclick="openLightbox(10)">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794542/IMG_2310_thkzu9.jpg" alt="Leno Perón - Encuadre General">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacto">
+    <div class="f-logo">BY-DUAL.COM</div>
+    <p>© 2026 DUAL Arquitectura Comercial</p>
+  </footer>
+
+  <div id="lightbox" onclick="closeLightboxOutside(e)">
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+    <div class="lb-frame" id="lightbox-frame"></div>
+    <div class="lb-nav">
+      <button class="lb-arrow" onclick="prevSlide()">‹</button>
+      <button class="lb-arrow" onclick="nextSlide()">›</button>
+    </div>
+    <div class="lb-info">
+      <span id="lightbox-caption"></span>
+      <span id="lightbox-counter"></span>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => { document.body.classList.add('loaded'); });
+
+    const photos = [
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794758/IMG_2376_k0i22l.jpg", cap:"Vista General"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794701/IMG_2304_us0s50.jpg", cap:"Detalle Barra"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794637/IMG_2314_pz6gdf.jpg", cap:"Salón Interior"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794552/IMG_2289_hlym6v.jpg", cap:"Fachada Nocturna"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794548/IMG_2326_mtftpl.jpg", cap:"Mobiliario"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794548/IMG_2344_yfqkhw.jpg", cap:"Perspectiva Lateral"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794546/IMG_2337_nvzayv.jpg", cap:"Iluminación"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794546/IMG_2286_s12bh6.jpg", cap:"Texturas de Madera"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794545/IMG_2303_qu7q3z.jpg", cap:"Acceso"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794543/IMG_2294_btypfe.jpg", cap:"Contramano"},
+      {src:"https://res.cloudinary.com/dwrjsb2nc/image/upload/f_auto,q_auto/v1781794542/IMG_2310_thkzu9.jpg", cap:"Encuadre General"}
+    ];
+
+    const slides = [ {type:'single',a:0}, {type:'single',a:1}, {type:'single',a:2}, {type:'single',a:3}, {type:'single',a:4}, {type:'single',a:5}, {type:'single',a:6}, {type:'single',a:7}, {type:'single',a:8}, {type:'single',a:9}, {type:'single',a:10} ];
+    let currentSlide = 0;
+
+    function openLightbox(index) {
+      currentSlide = index;
+      renderSlide();
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function closeLightboxOutside(e) {
+      if(e.target === document.getElementById('lightbox')) closeLightbox();
+    }
+    function nextSlide() { currentSlide = (currentSlide + 1) % slides.length; renderSlide(); }
+    function prevSlide() { currentSlide = (currentSlide - 1 + slides.length) % slides.length; renderSlide(); }
+
+    function renderSlide() {
+      const s = slides[currentSlide];
+      const f = document.getElementById('lightbox-frame');
+      f.innerHTML = '<img src="' + photos[s.a].src + '">';
+      document.getElementById('lightbox-caption').textContent = photos[s.a].cap;
+      document.getElementById('lightbox-counter').textContent = (currentSlide + 1) + ' / ' + slides.length;
+    }
+
+    document.addEventListener('keydown', e => {
+      if(document.getElementById('lightbox').classList.contains('open')){
+        if(e.key === 'ArrowRight') nextSlide();
+        if(e.key === 'ArrowLeft') prevSlide();
+        if(e.key === 'Escape') closeLightbox();
+      }
+    });
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.item').forEach(i => obs.observe(i));
+  </script>
+</body>
+</html>
