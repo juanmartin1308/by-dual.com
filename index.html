@@ -201,9 +201,22 @@
       .founder-duo-info { padding:24px; }
       .founder-role-badge { width:120px; }
       .team-cards { grid-template-columns:1fr 1fr; gap:3px; }
-      .team-card-back { padding:18px 14px; }
+      /* Fix flip Safari iOS — sin 3D en mobile */
+      .team-card { perspective:none; }
+      .team-card-inner { transform-style:flat; transition:none; }
+      .team-card.flipped .team-card-inner { transform:none; }
+      .team-card-front { backface-visibility:visible; transition:opacity 0.3s ease; }
+      .team-card.flipped .team-card-front { opacity:0; pointer-events:none; }
+      .team-card-back {
+        backface-visibility:visible;
+        transform:none;
+        opacity:0; pointer-events:none;
+        transition:opacity 0.3s ease;
+        padding:18px 14px;
+      }
+      .team-card.flipped .team-card-back { opacity:1; pointer-events:auto; }
       .team-card-back .back-name { font-size:14px; padding-bottom:10px; margin-bottom:10px; }
-      .team-card-back .back-bio { font-size:10px; line-height:1.55; }
+      .team-card-back .back-bio { font-size:11px; line-height:1.6; }
       .team-card-back .back-close { font-size:7px; }
 
       /* STATS */
@@ -214,9 +227,11 @@
       #proyectos { padding:0 0 40px; }
       .proj-header { padding:48px 20px 24px; flex-direction:column; gap:20px; align-items:flex-start; }
       .filters { flex-wrap:wrap; gap:6px; }
-      .proj-grid { padding:0 20px; grid-template-columns:1fr; gap:3px; }
-      .card { min-height:280px !important; grid-column:span 1 !important; }
-      .card-name { font-size:clamp(28px,8vw,44px); }
+      .proj-grid { padding:0; grid-template-columns:1fr 1fr; gap:2px; }
+      .card { min-height:220px !important; grid-column:span 1 !important; }
+      .card:first-child { grid-column:span 2 !important; min-height:300px !important; }
+      .card-name { font-size:clamp(22px,6vw,36px); }
+      .card-info { padding:18px 16px; }
 
       /* CONTACT */
       .contact { grid-template-columns:1fr; gap:40px; padding:64px 20px; }
