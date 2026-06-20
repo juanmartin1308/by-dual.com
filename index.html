@@ -68,13 +68,42 @@
     .founder-role-badge { display:block; height:auto; width:180px; max-width:180px; opacity:0.9; }
 
     .team-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; }
-    .team-card { position:relative; overflow:hidden; background:var(--gray-mid); cursor:pointer; transition:transform 0.4s ease; border-radius:12px; }
-    .team-card:hover { transform:scale(1.02); z-index:2; }
-    .team-card img { width:100%; aspect-ratio:3/4; object-fit:cover; object-position:top; display:block; transition:filter 0.5s ease, transform 0.5s ease; }
-    .team-card:hover img { transform:scale(1.04); }
+
+    /* ── FLIP CARD ── */
+    .team-card { perspective:1000px; cursor:pointer; border-radius:12px; }
+    .team-card-inner {
+      position:relative; width:100%; aspect-ratio:3/4;
+      transform-style:preserve-3d;
+      transition:transform 0.65s cubic-bezier(0.4,0.2,0.2,1);
+      border-radius:12px;
+    }
+    .team-card.flipped .team-card-inner { transform:rotateY(180deg); }
+
+    /* FRENTE */
+    .team-card-front {
+      position:absolute; inset:0; backface-visibility:hidden;
+      border-radius:12px; overflow:hidden; background:var(--gray-mid);
+    }
+    .team-card-front img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; transition:transform 0.5s ease; }
+    .team-card:not(.flipped) .team-card-front:hover img { transform:scale(1.04); }
     .team-card-info { position:absolute; bottom:0; left:0; right:0; padding:20px 18px; z-index:2; background:linear-gradient(to top, rgba(10,10,10,0.92) 0%, transparent 100%); }
     .team-card-role { font-size:9px; letter-spacing:0.26em; text-transform:uppercase; color:var(--orange); margin-bottom:5px; font-weight:500; }
     .team-card-name { font-family:'Montserrat',sans-serif; font-size:clamp(20px,2.4vw,28px); font-weight:700; text-transform:uppercase; letter-spacing:0.04em; line-height:1.05; }
+
+    /* REVERSO */
+    .team-card-back {
+      position:absolute; inset:0; backface-visibility:hidden;
+      transform:rotateY(180deg);
+      border-radius:12px; overflow:hidden;
+      background:#ffffff; color:#0d0d0d;
+      display:flex; flex-direction:column; justify-content:space-between;
+      padding:28px 24px;
+    }
+    .team-card-back .back-role { font-size:8px; letter-spacing:0.28em; text-transform:uppercase; color:var(--orange); font-weight:600; margin-bottom:10px; }
+    .team-card-back .back-name { font-family:'Montserrat',sans-serif; font-size:clamp(16px,1.8vw,22px); font-weight:800; text-transform:uppercase; letter-spacing:0.02em; line-height:1.05; color:#0d0d0d; border-bottom:2px solid var(--orange); padding-bottom:14px; margin-bottom:16px; }
+    .team-card-back .back-bio { font-size:clamp(10px,0.85vw,12px); line-height:1.65; color:#333; font-weight:400; flex:1; }
+    .team-card-back .back-close { font-size:8px; letter-spacing:0.2em; text-transform:uppercase; color:#999; margin-top:16px; text-align:right; }
+    .team-card-back .back-logo { height:18px; width:auto; opacity:0.25; margin-top:12px; display:block; }
 
     .stats { display:grid; grid-template-columns:repeat(4,1fr); background:#e0e0e0; gap:1px; }
     .stat { background:#ffffff; padding:56px 36px 52px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; border-top:3px solid var(--orange); }
@@ -230,21 +259,81 @@
     </div>
   </div>
   <div class="team-cards">
-    <div class="team-card">
-      <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834582/IMG_2003-Mejorado-NR-Editar_x4qq8o.jpg" alt="Juan Martín Fara">
-      <div class="team-card-info"><p class="team-card-role">Socio Fundador · Arquitecto</p><h4 class="team-card-name">JUAN<br>MARTÍN<br>FARA</h4></div>
+    <div class="team-card" onclick="this.classList.toggle('flipped')">
+      <div class="team-card-inner">
+        <div class="team-card-front">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834582/IMG_2003-Mejorado-NR-Editar_x4qq8o.jpg" alt="Juan Martín Fara">
+          <div class="team-card-info"><p class="team-card-role">Socio Fundador · Arquitecto</p><h4 class="team-card-name">JUAN<br>MARTÍN<br>FARA</h4></div>
+        </div>
+        <div class="team-card-back">
+          <div>
+            <p class="back-role">Socio Fundador · Arquitecto</p>
+            <h4 class="back-name">JUAN MARTÍN FARA</h4>
+            <p class="back-bio">Dirige la gestión técnica y administrativa del estudio: desde la elaboración de planos constructivos hasta las coordinaciones de obra. Auxiliar docente en el Taller de Proyecto Arquitectónico de la FAU-UNT desde 2023.</p>
+          </div>
+          <div>
+            <p class="back-close">Tocá para cerrar ×</p>
+            <img class="back-logo" src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781812198/LOGO_BLANCO_NUEVO_bdpzeu.png" alt="DUAL">
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="team-card">
-      <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834552/_DSC2031-Mejorado-NR-Editar_n3njnc.jpg" alt="Javier Ruiz Cabello">
-      <div class="team-card-info"><p class="team-card-role">Socio Fundador · Arquitecto</p><h4 class="team-card-name">JAVIER<br>RUIZ<br>CABELLO</h4></div>
+    <div class="team-card" onclick="this.classList.toggle('flipped')">
+      <div class="team-card-inner">
+        <div class="team-card-front">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834552/_DSC2031-Mejorado-NR-Editar_n3njnc.jpg" alt="Javier Ruiz Cabello">
+          <div class="team-card-info"><p class="team-card-role">Socio Fundador · Arquitecto</p><h4 class="team-card-name">JAVIER<br>RUIZ<br>CABELLO</h4></div>
+        </div>
+        <div class="team-card-back">
+          <div>
+            <p class="back-role">Socio Fundador · Arquitecto</p>
+            <h4 class="back-name">JAVIER RUIZ CABELLO</h4>
+            <p class="back-bio">Lidera el área de proyectos con foco en la calidad conceptual y la coherencia de cada intervención, desde la primera idea hasta el detalle constructivo. MBA en Project Management (2023). Seminarista en el Taller de Proyecto Arquitectónico de la FAU-UNT desde 2026.</p>
+          </div>
+          <div>
+            <p class="back-close">Tocá para cerrar ×</p>
+            <img class="back-logo" src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781812198/LOGO_BLANCO_NUEVO_bdpzeu.png" alt="DUAL">
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="team-card">
-      <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834540/_DSC2090-Mejorado-NR-Editar_w6exbc.jpg" alt="Máximo Jacobo">
-      <div class="team-card-info"><p class="team-card-role">Consultor Externo · Ing. Civil</p><h4 class="team-card-name">MÁXIMO<br>JACOBO</h4></div>
+    <div class="team-card" onclick="this.classList.toggle('flipped')">
+      <div class="team-card-inner">
+        <div class="team-card-front">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834540/_DSC2090-Mejorado-NR-Editar_w6exbc.jpg" alt="Máximo Jacobo">
+          <div class="team-card-info"><p class="team-card-role">Consultor Externo · Ing. Civil</p><h4 class="team-card-name">MÁXIMO<br>JACOBO</h4></div>
+        </div>
+        <div class="team-card-back">
+          <div>
+            <p class="back-role">Consultor Externo · Ing. Civil</p>
+            <h4 class="back-name">MÁXIMO JACOBO</h4>
+            <p class="back-bio">Responsable del cálculo y proyecto estructural, asegurando la viabilidad técnica de cada obra.</p>
+          </div>
+          <div>
+            <p class="back-close">Tocá para cerrar ×</p>
+            <img class="back-logo" src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781812198/LOGO_BLANCO_NUEVO_bdpzeu.png" alt="DUAL">
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="team-card">
-      <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834567/_DSC2111-Mejorado-NR-Editar_nyftzk.jpg" alt="Belén Juárez">
-      <div class="team-card-info"><p class="team-card-role">Project Leader · Arquitecta</p><h4 class="team-card-name">BELÉN<br>JUÁREZ</h4></div>
+    <div class="team-card" onclick="this.classList.toggle('flipped')">
+      <div class="team-card-inner">
+        <div class="team-card-front">
+          <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781834567/_DSC2111-Mejorado-NR-Editar_nyftzk.jpg" alt="Belén Juárez">
+          <div class="team-card-info"><p class="team-card-role">Project Leader · Arquitecta</p><h4 class="team-card-name">BELÉN<br>JUÁREZ</h4></div>
+        </div>
+        <div class="team-card-back">
+          <div>
+            <p class="back-role">Project Leader · Arquitecta</p>
+            <h4 class="back-name">BELÉN JUÁREZ</h4>
+            <p class="back-bio">Coordina y da seguimiento a los proyectos garantizando que cada etapa responda a los objetivos del cliente y la visión del estudio. Ganadora del 9th Inspirelli Awards en la categoría Diseño Urbano (2024). Seminarista en el Taller de Proyecto Arquitectónico de la FAU-UNT desde 2023.</p>
+          </div>
+          <div>
+            <p class="back-close">Tocá para cerrar ×</p>
+            <img class="back-logo" src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1781812198/LOGO_BLANCO_NUEVO_bdpzeu.png" alt="DUAL">
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
