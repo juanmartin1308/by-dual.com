@@ -169,6 +169,62 @@
     .wa-float:hover { transform:scale(1.1); opacity:1; }
     .wa-float img { width:42px; height:42px; object-fit:contain; }
     .wa-float.wa-hidden { opacity:0 !important; pointer-events:none !important; transform:scale(0.75) !important; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE MOBILE — max-width: 768px
+    ══════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* NAV */
+      nav { padding:14px 20px; }
+      .nav-links { display:none; }
+      .nav-cta { display:none; }
+
+      /* HERO */
+      .hero { padding:100px 20px 56px; }
+      .hero-title { font-size:clamp(52px,14vw,80px); }
+      .hero-desc { font-size:14px; }
+      .hero-scroll { display:none; }
+      .hero-side { display:none; }
+
+      /* MARQUEE */
+      .marquee-name { font-size:26px; }
+      .marquee-item { padding:20px 32px; gap:32px; }
+
+      /* INTRO / ESTUDIO */
+      .intro { grid-template-columns:1fr; gap:36px; padding:64px 20px; }
+
+      /* TEAM */
+      .team { padding:56px 20px 72px; }
+      .founder-duo { height:360px; }
+      .founder-name-big { font-size:clamp(18px,5vw,26px); }
+      .founder-duo-info { padding:24px; }
+      .founder-role-badge { width:120px; }
+      .team-cards { grid-template-columns:1fr 1fr; gap:3px; }
+      .team-card-back { padding:18px 14px; }
+      .team-card-back .back-name { font-size:14px; padding-bottom:10px; margin-bottom:10px; }
+      .team-card-back .back-bio { font-size:10px; line-height:1.55; }
+      .team-card-back .back-close { font-size:7px; }
+
+      /* STATS */
+      .stats { grid-template-columns:1fr 1fr; }
+      .stat { padding:36px 20px; }
+
+      /* PROYECTOS */
+      #proyectos { padding:0 0 40px; }
+      .proj-header { padding:48px 20px 24px; flex-direction:column; gap:20px; align-items:flex-start; }
+      .filters { flex-wrap:wrap; gap:6px; }
+      .proj-grid { padding:0 20px; grid-template-columns:1fr; gap:3px; }
+      .card { min-height:280px !important; grid-column:span 1 !important; }
+      .card-name { font-size:clamp(28px,8vw,44px); }
+
+      /* CONTACT */
+      .contact { grid-template-columns:1fr; gap:40px; padding:64px 20px; }
+
+      /* FOOTER */
+      footer { flex-direction:column; gap:20px; text-align:center; padding:32px 20px; }
+      .f-social { justify-content:center; }
+    }
   </style>
 </head>
 <body>
