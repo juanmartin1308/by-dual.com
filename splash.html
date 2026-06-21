@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DUAL — Arquitectura Comercial</title>
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1782049433/LOGO_MINIATURA_bhpxtf.png">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      background: #0d0d0d;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: #0d0d0d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.9s ease;
+    }
+
+    #splash.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .logo-block {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: clamp(10px, 2.5vw, 20px);
+    }
+
+    /* ── LETRAS ── */
+    .dual-letters {
+      display: flex;
+      align-items: flex-end;
+      gap: clamp(3px, 1vw, 8px);
+    }
+
+    .letter {
+      overflow: hidden;
+      height: clamp(44px, 11vw, 84px);
+    }
+
+    .letter img {
+      height: 100%;
+      width: auto;
+      display: block;
+      transform: translateY(115%);
+      opacity: 0;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.25s ease;
+    }
+
+    .letter.show img {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ── SEPARADOR ── */
+    .sep {
+      width: 1px;
+      height: clamp(28px, 7.5vw, 56px);
+      background: rgba(255,255,255,0.2);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      flex-shrink: 0;
+    }
+
+    .sep.show { opacity: 1; }
+
+    /* ── SUBTÍTULO ── */
+    .sub-wrap {
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .sub-wrap.show {
+      opacity: 0.8;
+      transform: translateX(0);
+    }
+
+    .sub-wrap img {
+      height: clamp(33px, 8vw, 70px);
+      width: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="logo-block">
+    <div class="dual-letters">
+      <div class="letter" id="l-D"><img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1782053109/D_d3sssg.png" alt="D"></div>
+      <div class="letter" id="l-U"><img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1782053110/U_bvd63c.png" alt="U"></div>
+      <div class="letter" id="l-A"><img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1782053110/A_xoxdlm.png" alt="A"></div>
+      <div class="letter" id="l-L"><img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1782053110/L_og77qe.png" alt="L"></div>
+    </div>
+    <div class="sub-wrap" id="sub">
+      <img src="https://res.cloudinary.com/dwrjsb2nc/image/upload/v1782052777/SUBTITULO_SOLO_uvfk5l.png" alt="Arquitectura Comercial">
+    </div>
+  </div>
+</div>
+
+<script>
+  const letters = ['l-D','l-U','l-A','l-L'];
+  const delay = 120; // ms entre cada letra
+
+  // Letras saltan una por una
+  letters.forEach((id, i) => {
+    setTimeout(() => {
+      document.getElementById(id).classList.add('show');
+    }, 300 + i * delay);
+  });
+
+  // Subtítulo aparece después de la última letra
+  setTimeout(() => {
+    document.getElementById('sub').classList.add('show');
+  }, 300 + letters.length * delay + 200);
+
+  // Mostrar separador y subtítulo
+  setTimeout(() => {
+    document.getElementById('sep').classList.add('show');
+  }, 300 + letters.length * delay + 100);
+
+  // Fade out y redirige
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('fade-out');
+    setTimeout(() => { window.location.href = 'index.html'; }, 950);
+  }, 2800);
+</script>
+
+</body>
+</html>
